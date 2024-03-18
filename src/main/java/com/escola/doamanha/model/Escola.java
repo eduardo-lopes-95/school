@@ -1,10 +1,15 @@
 package com.escola.doamanha.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.List;
 
+@Getter
+@Setter
 @Data
 @Entity
 @Table(name="Escola")
@@ -17,14 +22,16 @@ public class Escola {
     @Column(name="nome", nullable = false)
     private String nome;
 
-    @OneToMany(fetch = FetchType.LAZY)
-    @JoinColumn(name = "escola_id")
+    @OneToMany(mappedBy = "escola", cascade = CascadeType.ALL)
+    @JsonManagedReference
     private List<Professor> professores;
 
     public Escola() {
     }
 
-    public Escola(long id) {
-        this.id = id;
+    public Escola(String nome, List<Professor> professores) {
+        this.nome = nome;
+        this.professores = professores;
     }
+
 }

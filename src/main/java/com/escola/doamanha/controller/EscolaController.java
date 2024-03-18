@@ -1,5 +1,8 @@
 package com.escola.doamanha.controller;
 
+import com.escola.doamanha.dto.EscolaRequest;
+import com.escola.doamanha.dto.ProfessorRequest;
+import com.escola.doamanha.dto.UpdateEscolaRequest;
 import com.escola.doamanha.model.Escola;
 import com.escola.doamanha.service.impl.EscolaService;
 import org.springframework.http.HttpStatus;
@@ -20,8 +23,8 @@ public class EscolaController {
 
     // build create Escola REST API
     @PostMapping("create")
-    public ResponseEntity<Escola> saveEscola(@RequestBody Escola Escola){
-        return new ResponseEntity<Escola>(escolaService.saveEscola(Escola), HttpStatus.CREATED);
+    public ResponseEntity<Escola> saveEscola(@RequestBody EscolaRequest request){
+        return new ResponseEntity<Escola>(escolaService.saveEscola(request), HttpStatus.CREATED);
     }
 
     // build get all Escolas REST API
@@ -41,8 +44,8 @@ public class EscolaController {
     // http://localhost:8080/api/Escolas/1
     @PutMapping("{id}")
     public ResponseEntity<Escola> updateEscola(@PathVariable("id") long id
-            ,@RequestBody Escola Escola){
-        return new ResponseEntity<Escola>(escolaService.updateEscola(Escola, id), HttpStatus.OK);
+            ,@RequestBody UpdateEscolaRequest request){
+        return new ResponseEntity<Escola>(escolaService.updateEscola(request, id), HttpStatus.OK);
     }
 
     // build delete Escola REST API

@@ -1,43 +1,51 @@
 package com.escola.doamanha.service.impl;
 
+import com.escola.doamanha.dto.ProfessorRequest;
 import com.escola.doamanha.model.Professor;
 import com.escola.doamanha.repository.ProfessorRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ProfessorServiceImpl implements ProfessorService {
 
     private ProfessorRepository professorRepository;
+    private EscolaServiceImpl EscolaService;
 
-    public ProfessorServiceImpl(ProfessorRepository professorRepository) {
+    public ProfessorServiceImpl(ProfessorRepository professorRepository, EscolaServiceImpl escolaService) {
         this.professorRepository = professorRepository;
+        EscolaService = escolaService;
     }
 
     @Override
-    public Professor saveProfessor(Professor professor) {
+    public Professor saveProfessor(ProfessorRequest request) {
+        Professor professor = new Professor();
+        professor.setNome(request.getNome());
+        professor.setMateria(request.getMateria());
+        //professor.setEscola(EscolaService.getEscolaById(request.getEscolaId()));
         return professorRepository.save(professor);
     }
 
     @Override
-    public List<Professor> getAllProfessores() {
-        return professorRepository.findAll();
+    public List<Professor> getAllProfessores(long escolaId) {
+        return professorRepository.findAllById(escolaId);
     }
 
     @Override
     public Professor getProfessorById(long id) {
-        return professorRepository.getReferenceById(id);
+        // Busca o professor pelo ID e retorna um Optional
+        Optional<Professor> optionalProfessor = professorRepository.findById(id);
+        return optionalProfessor.orElseThrow(() -> new RuntimeException("Professor não encontrado com o ID: " + id));
     }
 
     @Override
-    public Professor updateProfessor(Professor professor, long id) {
+    public Professor updateProfessor(ProfessorRequest request, long id) {
         Professor entity = getProfessorById(id);
-        entity.setNome(professor.getNome());
-        entity.setMateria(professor.getMateria());
-        entity.setEscola(professor.getEscola());
-        professorRepository.save(entity);
-        return entity;
+        entity.setNome(request.getNome());
+        entity.setMateria(request.getMateria());
+        return professorRepository.save(entity);
     }
 
     @Override

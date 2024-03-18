@@ -1,5 +1,6 @@
 package com.escola.doamanha.controller;
 
+import com.escola.doamanha.dto.ProfessorRequest;
 import com.escola.doamanha.model.Professor;
 import com.escola.doamanha.service.impl.ProfessorService;
 import org.springframework.http.HttpStatus;
@@ -20,14 +21,14 @@ public class ProfessorController {
 
     // build create Professor REST API
     @PostMapping("create")
-    public ResponseEntity<Professor> saveProfessor(@RequestBody Professor professor){
-        return new ResponseEntity<Professor>(professorService.saveProfessor(professor), HttpStatus.CREATED);
+    public ResponseEntity<Professor> saveProfessor(@RequestBody ProfessorRequest request){
+        return new ResponseEntity<Professor>(professorService.saveProfessor(request), HttpStatus.CREATED);
     }
 
     // build get all Professors REST API
-    @GetMapping
-    public List<Professor> getAllProfessores(){
-        return professorService.getAllProfessores();
+    @GetMapping("{escola_id}/list")
+    public List<Professor> getAllProfessores(long escolaId){
+        return professorService.getAllProfessores(long escolaId);
     }
 
     // build get Professor by id REST API
@@ -41,8 +42,8 @@ public class ProfessorController {
     // http://localhost:8080/api/Professors/1
     @PutMapping("{id}")
     public ResponseEntity<Professor> updateProfessor(@PathVariable("id") long id
-            ,@RequestBody Professor Professor){
-        return new ResponseEntity<Professor>(professorService.updateProfessor(Professor, id), HttpStatus.OK);
+            ,@RequestBody ProfessorRequest request){
+        return new ResponseEntity<Professor>(professorService.updateProfessor(request, id), HttpStatus.OK);
     }
 
     // build delete Professor REST API
