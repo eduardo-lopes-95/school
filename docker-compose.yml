@@ -1,0 +1,14 @@
+version: '3'
+services:
+  db:
+    image: mysql:latest
+    restart: always
+    environment:
+      - 'MYSQL_DATABASE=school'
+      - 'MYSQL_PASSWORD=admin'
+      - 'MYSQL_USER=sa'
+      - 'MYSQL_ROOT_PASSWORD=admin'
+    ports:
+      - "3307:3306"
+    volumes:
+      - /path/on/host:/var/lib/mysql
