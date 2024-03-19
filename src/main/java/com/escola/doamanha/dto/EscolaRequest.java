@@ -1,27 +1,18 @@
 package com.escola.doamanha.dto;
 
 import com.escola.doamanha.model.Professor;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.List;
+
+@Getter
+@Setter
 
 public class EscolaRequest {
     private String nome;
 
-    public List<ProfessorRequest> getProfessores() {
-        return professores;
-    }
-
-    public void setProfessores(List<ProfessorRequest> professores) {
-        this.professores = professores;
-    }
+    private String cep;
 
     private List<ProfessorRequest> professores;
-
-    public String getNome() {
-        return nome;
-    }
-
-    public void setNome(String nome) {
-        this.nome = nome;
-    }
 }

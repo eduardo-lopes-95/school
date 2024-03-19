@@ -22,6 +22,11 @@ public class Escola {
     @Column(name="nome", nullable = false)
     private String nome;
 
+    @OneToOne()
+    @JoinColumn(name = "cep_id", referencedColumnName = "id")
+    @JsonManagedReference
+    private Cep cep;
+
     @OneToMany(mappedBy = "escola", cascade = CascadeType.ALL)
     @JsonManagedReference
     private List<Professor> professores;
@@ -29,9 +34,9 @@ public class Escola {
     public Escola() {
     }
 
-    public Escola(String nome, List<Professor> professores) {
+    public Escola(String nome, Cep cep, List<Professor> professores) {
         this.nome = nome;
+        this.cep = cep;
         this.professores = professores;
     }
-
 }

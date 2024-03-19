@@ -11,7 +11,22 @@
 
   {
     "nome": "Nome da Escola",
-    "endereco": "Endereço da Escola"
+    "cep": "Cep da Escola"
+  }
+  
+  {
+	"nome": "Escola Primária",
+	"cep": "12345678",
+	"professores": [
+		{
+			"nome": "João da Silva",
+			"materia": "Matemática"
+		},
+		{
+			"nome": "Maria Oliveira",
+			"materia": "Português"
+		}
+    ]
   }
 
 ### 2. Obter Todas as Escolas
@@ -48,7 +63,7 @@
 
   {
     "nome": "Novo Nome da Escola",
-    "endereco": "Novo Endereço da Escola"
+    "cep": "Cep da Escola"
   }
 
 ### 5. Deletar Escola
@@ -106,9 +121,7 @@ HTTP/1.1 201 Created
 - **Parâmetros de Entrada:**
     - `escola_id`: O ID da escola para a qual deseja-se listar os professores.
 - **Exemplo de Requisição:**
-
-
-- **Endpoint:** `GET /api/professor/123/list`
+- ***Endpoint:*** `GET /api/professor/123/list`
 
 - **Exemplo de Resposta (Sucesso):**
 ```json

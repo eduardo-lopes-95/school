@@ -1,21 +1,19 @@
-version: '3'
+version: '3.8'
+
 services:
-  db:
-    container_name: db
+  mysql:
     image: mysql:latest
+    container_name: mysql
     restart: always
     environment:
-      MYSQL_DATABASE: school
-      MYSQL_PASSWORD: admin
-      MYSQL_USER: sa
-      MYSQL_ROOT_PASSWORD: admin
+      MYSQL_ROOT_PASSWORD: $MYSQLDB_ROOT_PASSWORD
+      MYSQL_DATABASE: $MYSQLDB_DATABASE
+      MYSQL_USER: $MYSQLDB_USER
+      MYSQL_PASSWORD: $MYSQLDB_ROOT_PASSWORD
     ports:
       - "3307:3306"
-    networks:
-      - springapimysql-net
     volumes:
-      - /path/on/host:/var/lib/mysql
+      - mysql_data:/var/lib/mysql
 
-
-networks:
-  springapimysql-net:
+volumes:
+  mysql_data:

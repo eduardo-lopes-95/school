@@ -1,13 +1,13 @@
 package com.escola.doamanha.service.impl;
 
-
 import com.escola.doamanha.dto.EscolaRequest;
 import com.escola.doamanha.dto.ProfessorRequest;
 import com.escola.doamanha.dto.UpdateEscolaRequest;
+import com.escola.doamanha.model.Cep;
 import com.escola.doamanha.model.Escola;
 import com.escola.doamanha.model.Professor;
+import com.escola.doamanha.repository.CepRepository;
 import com.escola.doamanha.repository.EscolaRepository;
-import com.escola.doamanha.repository.ProfessorRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -18,19 +18,35 @@ import java.util.Optional;
 public class EscolaServiceImpl implements EscolaService {
 
     private EscolaRepository escolaRepository;
-    private ProfessorRepository professorRepository;
+    private CepRepository cepRepository;
+    private CepService cepService;
 
-    public EscolaServiceImpl(EscolaRepository escolaRepository, ProfessorRepository professorRepository) {
+    public EscolaServiceImpl(EscolaRepository escolaRepository, CepRepository cepRepository, CepService cepService) {
         this.escolaRepository = escolaRepository;
-        this.professorRepository = professorRepository;
+        this.cepRepository = cepRepository;
+        this.cepService = cepService;
     }
 
     @Override
     public Escola saveEscola(EscolaRequest request) {
 
+        // Criar uma nova escola com base nos dados da requisição
         Escola escola = new Escola();
         escola.setNome(request.getNome());
 
+        // Verificar se a requisição possui um CEP
+        if (request.getCep() != null) {
+            // Criar um novo CEP com base nos dados da requisição
+            Cep cep = cepService.getCep(request.getCep());
+
+            // Salvar o CEP no banco de dados
+            cep = cepRepository.save(cep);
+
+            // Associar o CEP à escola
+            escola.setCep(cep);
+        }
+
+        // Criar e associar os professores à escola
         List<Professor> professores = new ArrayList<>();
         for (ProfessorRequest professorRequest : request.getProfessores()) {
             Professor professor = new Professor();
@@ -41,6 +57,7 @@ public class EscolaServiceImpl implements EscolaService {
         }
         escola.setProfessores(professores);
 
+        // Salvar a escola no banco de dados
         return escolaRepository.save(escola);
     }
 
