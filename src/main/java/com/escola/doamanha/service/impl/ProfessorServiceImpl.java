@@ -1,10 +1,13 @@
 package com.escola.doamanha.service.impl;
 
 import com.escola.doamanha.dto.ProfessorRequest;
+import com.escola.doamanha.model.Escola;
 import com.escola.doamanha.model.Professor;
+import com.escola.doamanha.repository.EscolaRepository;
 import com.escola.doamanha.repository.ProfessorRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -12,11 +15,9 @@ import java.util.Optional;
 public class ProfessorServiceImpl implements ProfessorService {
 
     private ProfessorRepository professorRepository;
-    private EscolaServiceImpl EscolaService;
 
-    public ProfessorServiceImpl(ProfessorRepository professorRepository, EscolaServiceImpl escolaService) {
+    public ProfessorServiceImpl(ProfessorRepository professorRepository) {
         this.professorRepository = professorRepository;
-        EscolaService = escolaService;
     }
 
     @Override
@@ -30,7 +31,15 @@ public class ProfessorServiceImpl implements ProfessorService {
 
     @Override
     public List<Professor> getAllProfessores(long escolaId) {
-        return professorRepository.findAllById(escolaId);
+        List<Professor> professores = new ArrayList<>();
+
+        for (Professor prof : professorRepository.findAll()) {
+            if(prof.getEscola().getId() == escolaId){
+                professores.add(prof);
+            }
+        }
+
+        return professores;
     }
 
     @Override

@@ -28,7 +28,7 @@ public class ProfessorController {
     // build get all Professors REST API
     @GetMapping("{escola_id}/list")
     public List<Professor> getAllProfessores(long escolaId){
-        return professorService.getAllProfessores(long escolaId);
+        return professorService.getAllProfessores(escolaId);
     }
 
     // build get Professor by id REST API
